@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Formatter;
+use App\Http\Requests\FornecedorRequest;
 use App\Proxies\FornecedorProxy;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,9 +16,19 @@ class FornecedorController extends Controller
         $this->proxy = $proxy;;
     }
 
-    public function consultarCnpj(Request $request): JsonResponse
+    public function consultarCnpj(FornecedorRequest $request): JsonResponse
     {
         $formattedCnpj = Formatter::formatCnpj($request->documento);
-        return response()->json($this->proxy->consultarCnpj($formattedCnpj));
+        $dadosEmpresa = $this->proxy->consultarCnpj($formattedCnpj);
+
+        return response()->json($dadosEmpresa);
+    }
+
+    public function salvarFornecedor(FornecedorRequest $request)
+    {
+        $formattedCnpj = Formatter::formatCnpj($request->documento);
+        $this->proxy->salvarDadosFornecedor($formattedCnpj);
+
+        return response()->json(['message' => 'Fornecedor salvo com sucesso!']);
     }
 }
