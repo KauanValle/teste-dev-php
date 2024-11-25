@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\FornecedorController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post("/salvarFornecedor", [FornecedorController::class, 'salvarFornecedor']);
+Route::put("/atualizarFornecedor", [FornecedorController::class, 'atualizarFornecedor']);
+Route::delete("/deletarFornecedor", [FornecedorController::class, 'deletarFornecedor']);
+Route::get("/listarFornecedores", [FornecedorController::class, 'listarFornecedores']);

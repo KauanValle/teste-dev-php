@@ -1,66 +1,53 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Sobre o projeto
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Esse projeto é uma API com objetivo de cadastrar dados de um fornecedor somente com o CNPJ do mesmo.
 
-## About Laravel
+## Guia de instalação
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Para iniciarmos a instalação do projetos iremos precisar ter as seguintes dependencias instaladas:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Docker
+- Composer 2
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+E agora com o terminal aberto, iremos rodar os seguintes comandos:
 
-## Learning Laravel
+> Iremos instalar as dependencias do projeto com o comando:
+>> - composer install
+> 
+> Agora iremos subir os containers com o seguinte comando:
+>> - docker-compose up -d
+> 
+> Vamos dar as permissões para o projeto
+>> - cd..
+>> - sudo chmod 775 -R revendamais-api/*
+>> 
+> Também iremos realizar a instação das dependencias do projeto dentro do container com o seguinte comando:
+>> docker exec -it revendamais-app composer install
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Configuração do .env
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+> Primeiro passo iremos copiar o .env.example com o comando:
+>> - cp .env.example .env
+> 
+> Já deixei as informações fixadas no .env.example para facilitar o teste da aplicação. (Sendo uma prática não utilizada no mercado, apenas para facilita o teste da aplicação)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Execução das migrations
 
-## Laravel Sponsors
+> Para executar as migrations, vamos acessar a bash do container e rodar diretamente por lá com o seguinte comando:
+>> docker exec -it revendamais-app php artisan migrate
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Guia de utilização das rotas
 
-### Premium Partners
+> **POST** /api/salvarFornecedor - Essa rota é resposável pela criação de um novo fornecedor.
+>> Body Example: { "documento": "00.000.000/0000-00" }
+>
+> **PUT** /api/atualizarFornecedor - Essa rota é resposável pela atualização de um fornecedor.
+>> Body Example: { "documento": "00.000.000/0000-00", "razao_social": "Teste realizado", "telefone": "4100000000", "cep": "00000000", "natureza_juridica": "Teste de natureza juridica", "situacao_cadastral": "INAPTA" }
+>
+> **DELETE** /api/deletarFornecedor - Essa rota é resposável pela exclusão de um fornecedor.
+>> Body Example: { "documento": "00.000.000/0000-00" }
+>
+> **GET** /api/listarFornecedores - Essa rota é resposável pela listagem de todos fornecedores, podendo enviar um body com filtros.
+>> Body Example: { "documento": "00.000.000/0000-00", "razao_social": "Teste realizado", "telefone": "4100000000", "cep": "00000000", "natureza_juridica": "Teste de natureza juridica", "situacao_cadastral": "INAPTA" }
+>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

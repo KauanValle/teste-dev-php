@@ -31,4 +31,7 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'brasil_api' => [
+        'url' => 'https://brasilapi.com.br/api/cnpj/v1/',
+    ],
 ];

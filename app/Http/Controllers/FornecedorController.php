@@ -2,33 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Formatter;
 use App\Http\Requests\FornecedorRequest;
-use App\Proxies\FornecedorProxy;
+use App\Models\Fornecedor;
+use App\Services\Fornecedor\FornecedorInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class FornecedorController extends Controller
 {
-    private FornecedorProxy $proxy;
-    public function __construct(FornecedorProxy $proxy)
+    private $service;
+    public function __construct(FornecedorInterface $service)
     {
-        $this->proxy = $proxy;;
+        $this->service = $service;;
     }
 
-    public function consultarCnpj(FornecedorRequest $request): JsonResponse
+    public function salvarFornecedor(FornecedorRequest $request): JsonResponse
     {
-        $formattedCnpj = Formatter::formatCnpj($request->documento);
-        $dadosEmpresa = $this->proxy->consultarCnpj($formattedCnpj);
-
-        return response()->json($dadosEmpresa);
+        $this->service->salvarDadosFornecedor($request->all());
+        return response()->json(['message' => 'Fornecedor salvo com sucesso!'], Response::HTTP_CREATED);
     }
 
-    public function salvarFornecedor(FornecedorRequest $request)
+    public function atualizarFornecedor(FornecedorRequest $request): JsonResponse
     {
-        $formattedCnpj = Formatter::formatCnpj($request->documento);
-        $this->proxy->salvarDadosFornecedor($formattedCnpj);
+        $this->service->atualizarDadosFornecedor($request->all());
+        return response()->json(['message' => 'Fornecedor atualizado com sucesso!'], Response::HTTP_OK);
+    }
 
-        return response()->json(['message' => 'Fornecedor salvo com sucesso!']);
+    public function deletarFornecedor(FornecedorRequest $request): JsonResponse
+    {
+        $this->service->deletarFornecedor($request->all());
+        return response()->json(['message' => 'Fornecedor deletado com sucesso!'], Response::HTTP_OK);
+    }
+
+    public function listarFornecedores(FornecedorRequest $request): JsonResponse
+    {
+        $filters = $request->only([Fornecedor::DOCUMENTO, Fornecedor::RAZAO_SOCIAL, Fornecedor::TELEFONE, Fornecedor::CEP, Fornecedor::NATUREZA_JURIDICA, Fornecedor::SITUACAO_CADASTRAL]);
+        $listaFornecedores = $this->service->listarFornecedores($filters);
+        return response()->json(['message' => $listaFornecedores], Response::HTTP_OK);
     }
 }

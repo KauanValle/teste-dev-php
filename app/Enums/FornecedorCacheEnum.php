@@ -4,5 +4,5 @@ namespace App\Enums;
 
 class FornecedorCacheEnum
 {
-    const DADOS_EMPRESA = 'dados_empresa';
+    const DADOS_FORNECEDOR = 'dados_fornecedor';
 }
